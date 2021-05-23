@@ -2,8 +2,10 @@ import constants
 from controller import Controller
 import argparse
 
+from db_settings import DATABASE_CONNECTION_SETTINGS
 from loader import JSONLoader
 from printer import JSONOrXMLPrinter
+from db_worker import StudentsRoomsDBWorker
 
 
 def get_parser():
@@ -20,4 +22,5 @@ if __name__ == '__main__':
     rooms_loader = JSONLoader(args.room_path)
     students_loader = JSONLoader(args.students_path)
     printer = JSONOrXMLPrinter(args.output_format)
-    Controller().process_files(rooms_loader, students_loader, printer)
+    worker = StudentsRoomsDBWorker(*DATABASE_CONNECTION_SETTINGS.values())
+    Controller().process_files(rooms_loader, students_loader, worker, printer)
